@@ -23,11 +23,35 @@ app = FastAPI(
 # Configuration CORS pour permettre les requêtes depuis le frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173"],  # Vite et Create React App
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "https://pedidos.system-root.fr"],  # Vite, CRA et production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class StripPrefixMiddleware:
+    """ASGI middleware minimal pour enlever un préfixe d'URL (ex: /api).
+
+    Utilisez ceci si votre reverse-proxy ne réécrit pas le chemin et laisse
+    le préfixe `/api` devant les routes.
+    """
+    def __init__(self, app, prefix: str = "/api"):
+        self.app = app
+        self.prefix = prefix
+
+    async def __call__(self, scope, receive, send):
+        if scope.get("type") == "http":
+            path = scope.get("path", "")
+            if path.startswith(self.prefix):
+                new_scope = dict(scope)
+                new_path = path[len(self.prefix):] or "/"
+                new_scope["path"] = new_path
+                scope = new_scope
+        await self.app(scope, receive, send)
+
+# Wrapper: appliquer le middleware de strip sur l'application ASGI
+app = StripPrefixMiddleware(app, prefix="/api")
 
 
 class SimulationRequest(BaseModel):
@@ -306,5 +330,5 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8000,
-        reload=True
+        reload=False
     )
