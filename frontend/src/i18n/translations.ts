@@ -140,7 +140,6 @@ export const translations = {
     deliveryReceived: "Livraison",
     deliveryExpected: "livraison prévue le",
     orderedOn: "commandée le",
-    thresholdCrossed: "Passage sous le seuil de",
     of: "de",
     
     // Day names lowercase
@@ -169,7 +168,6 @@ export const translations = {
     finalStock: "Stock Final",
     avgStock: "Stock Moyen",
     minStock: "Stock Min",
-    maxStock: "Stock Max",
     procurement: "Approvisionnements",
     totalOrdered: "Total Commandé",
     totalOrders: "Nombre de Commandes",
@@ -335,7 +333,6 @@ export const translations = {
     deliveryReceived: "Entrega",
     deliveryExpected: "entrega prevista el",
     orderedOn: "pedido el",
-    thresholdCrossed: "Paso bajo el umbral de",
     of: "de",
     
     // Day names lowercase
@@ -364,7 +361,6 @@ export const translations = {
     finalStock: "Stock Final",
     avgStock: "Stock Promedio",
     minStock: "Stock Mín",
-    maxStock: "Stock Máx",
     procurement: "Abastecimientos",
     totalOrdered: "Total Pedido",
     totalOrders: "Número de Pedidos",

@@ -9,7 +9,7 @@ import { Card, CardContent } from './components/ui/card';
 import { Input } from './components/ui/input';
 import { Label } from './components/ui/label';
 import { Button } from './components/ui/button';
-import { SimulationConfig, SimulationResult, AnalysisResult } from './types/simulation';
+import { SimulationConfig, SimulationResult } from './types/simulation';
 import { Package, Settings, Globe } from 'lucide-react';
 import { useLanguage } from './i18n/LanguageContext';
 
@@ -115,15 +115,6 @@ function App() {
 
       const simData: SimulationResult = await simResponse.json();
       setSimulationResult(simData);
-
-      // Lancer l'analyse
-      const analysisResponse = await fetch(`${API_URL}/analyze`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(configToRun),
-      });
 
       // Lancer l'optimisation
       const optimizationResponse = await fetch(`${API_URL}/optimize`, {
