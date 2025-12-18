@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # ═══════════════════════════════════════
+  # BACKEND - FastAPI
+  # ═══════════════════════════════════════
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: planning-backend
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - planning-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ═══════════════════════════════════════
+  # FRONTEND - React/Vite
+  # ═══════════════════════════════════════
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: planning-frontend
+    depends_on:
+      - backend
+    networks:
+      - planning-network
+      - nginx_proxy
+    restart: unless-stopped
+    environment:
+      # Configuration pour nginx-proxy (Let's Encrypt)
+      - VIRTUAL_HOST=pedidos.system-root.fr
+      - LETSENCRYPT_HOST=pedidos.system-root.fr
+      - LETSENCRYPT_EMAIL=votre-email@example.com
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+networks:
+  planning-network:
+    driver: bridge
+  nginx_proxy:
+    external: true
