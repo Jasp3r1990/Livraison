@@ -1,6 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { DailyDetail } from '@/types/simulation';
-import { format, startOfWeek, addDays } from 'date-fns';
+import { format } from 'date-fns';
 import { fr, es } from 'date-fns/locale';
 import { Calendar, TrendingDown, Package, ShoppingCart, AlertTriangle, List, CalendarDays } from 'lucide-react';
 import { useLanguage } from '@/i18n/LanguageContext';

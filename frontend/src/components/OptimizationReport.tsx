@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './ui/card';
 import { AlertTriangle, CheckCircle, TrendingUp, TrendingDown, Info, Zap } from 'lucide-react';
 import { useLanguage } from '../i18n/LanguageContext';
