@@ -29,7 +29,7 @@ export function DailyCalendarView({ dailyDetails }: DailyCalendarViewProps) {
 
   const translateDayName = (dayName: string): string => {
     const key = dayNameMap[dayName];
-    return key ? t(key) : dayName;
+    return key ? t(key as any) : dayName;
   };
 
   // Organiser les jours par semaine (Lundi = 1, Dimanche = 0)

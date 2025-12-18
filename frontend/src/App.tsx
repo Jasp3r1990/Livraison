@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { ConfigModal } from './components/ConfigModal';
 import { StockChart } from './components/StockChart';
 import { EventsCalendar } from './components/EventsCalendar';
-import { AnalysisReport } from './components/AnalysisReport';
 import { OptimizationReport } from './components/OptimizationReport';
 import { DailyCalendarView } from './components/DailyCalendarView';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './components/ui/tabs';
@@ -61,7 +60,6 @@ function App() {
     return loaded.daily_consumption * BALLS_PER_ASAFATE;
   });
   const [simulationResult, setSimulationResult] = useState<SimulationResult | null>(null);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [optimizationResult, setOptimizationResult] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -126,11 +124,6 @@ function App() {
         },
         body: JSON.stringify(configToRun),
       });
-
-      if (analysisResponse.ok) {
-        const analysisData: AnalysisResult = await analysisResponse.json();
-        setAnalysisResult(analysisData);
-      }
 
       // Lancer l'optimisation
       const optimizationResponse = await fetch(`${API_URL}/optimize`, {

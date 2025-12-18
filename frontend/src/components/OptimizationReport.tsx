@@ -83,7 +83,7 @@ export function OptimizationReport({ result }: OptimizationReportProps) {
     
     for (const [fr, key] of Object.entries(titleMap)) {
       if (title.toLowerCase().includes(fr.toLowerCase())) {
-        return t(key);
+        return t(key as any);
       }
     }
     return title;
