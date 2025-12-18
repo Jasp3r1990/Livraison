@@ -28,30 +28,42 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Middleware HTTP pour retirer le préfixe /api si le reverse-proxy ne le réécrit pas
+@app.middleware("http")
+async def strip_api_prefix(request, call_next):
+    prefix = "/api"
+    path = request.scope.get("path", "")
+    if path.startswith(prefix):
+        new_path = path[len(prefix):] or "/"
+        request.scope["path"] = new_path
+        # Mettre à jour raw_path pour Starlette/uvicorn
+        try:
+            request.scope["raw_path"] = new_path.encode("utf-8")
+        except Exception:
+            pass
+    return await call_next(request)
 
 
-class StripPrefixMiddleware:
-    """ASGI middleware minimal pour enlever un préfixe d'URL (ex: /api).
+@app.middleware("http")
+async def strip_api_prefix(request, call_next):
+    """Middleware HTTP pour retirer le préfixe `/api` si présent.
 
-    Utilisez ceci si votre reverse-proxy ne réécrit pas le chemin et laisse
-    le préfixe `/api` devant les routes.
+    Cette implémentation modifie `request.scope['path']` (et `raw_path` si possible),
+    puis appelle le handler suivant. Cela évite de remplacer l'objet `app`
+    par un wrapper non compatible avec FastAPI/Starlette.
     """
-    def __init__(self, app, prefix: str = "/api"):
-        self.app = app
-        self.prefix = prefix
+    prefix = "/api"
+    path = request.scope.get("path", "")
+    if path.startswith(prefix):
+        new_path = path[len(prefix):] or "/"
+        request.scope["path"] = new_path
+        try:
+            request.scope["raw_path"] = new_path.encode("utf-8")
+        except Exception:
+            pass
 
-    async def __call__(self, scope, receive, send):
-        if scope.get("type") == "http":
-            path = scope.get("path", "")
-            if path.startswith(self.prefix):
-                new_scope = dict(scope)
-                new_path = path[len(self.prefix):] or "/"
-                new_scope["path"] = new_path
-                scope = new_scope
-        await self.app(scope, receive, send)
-
-# Wrapper: appliquer le middleware de strip sur l'application ASGI
-app = StripPrefixMiddleware(app, prefix="/api")
+    response = await call_next(request)
+    return response
 
 
 class SimulationRequest(BaseModel):
