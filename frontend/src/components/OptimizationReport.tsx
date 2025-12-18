@@ -61,7 +61,9 @@ interface OptimizationReportProps {
 }
 
 export function OptimizationReport({ result }: OptimizationReportProps) {
-  const { t } = useLanguage();
+  const langCtx = useLanguage();
+  const { t } = langCtx;
+  const currentLang = (langCtx as any).language || (langCtx as any).locale || (langCtx as any).lang || 'fr';
   
   if (!result) {
     return null;
@@ -70,10 +72,14 @@ export function OptimizationReport({ result }: OptimizationReportProps) {
   // Traducteur pour les titres de recommandations
   const translateRecommendationTitle = (title: string): string => {
     const titleMap: { [key: string]: string } = {
+      
       'Configuration optimale recommandée': 'optimalConfigRecommended',
       'Configuration actuelle viable': 'configCurrentlyViable',
       'Capacité de livraison adéquate': 'adequateCapacity',
       'Opportunité d\'augmenter les ventes': 'increaseOpportunity',
+      'Configuration actuelle non viable': 'configCurrentlyNonViable',
+      'Réduire les ventes quotidiennes': 'reduceDailySales',
+      'Augmenter la capacité de livraison': 'increaseDeliveryCapacity',
     };
     
     for (const [fr, key] of Object.entries(titleMap)) {
@@ -87,6 +93,11 @@ export function OptimizationReport({ result }: OptimizationReportProps) {
   // Traducteur pour les messages et actions (utilise les clés de traduction existantes)
   const translateMessage = (text: string): string => {
     if (!text) return text;
+     
+     // Ne faire les remplacements que si la langue courante est espagnole
+     if (!String(currentLang).toLowerCase().startsWith('es')) {
+      return text;
+      }
     
     // Patterns d'état de stock (prioritaires - traiter en premier)
     // Pattern 1: Stock en baisse continue + NON VIABLE
@@ -124,6 +135,10 @@ export function OptimizationReport({ result }: OptimizationReportProps) {
       [/Vous pouvez vendre jusqu'à/gi, 'Puede vender hasta'],
       [/Augmenter progressivement de/gi, 'Aumentar gradualmente de'],
       [/Quantité max par livraison/gi, 'Cantidad máx por entrega'],
+      [/génère des ruptures de stock ou un stock décroissant./gi, 'genera rupturas de stock o un stock decreciente.'],
+      [/Consommation trop élevée./gi, 'Consumo demasiado alto.'],
+      [/ Réduire/gi, ' Reducir'],
+      
       
       // Unités (avant les mots individuels) - TOUT en asafates
       [/(?:boules|bolas)\/jour/gi, `asafates/${t('optDays').toLowerCase()}`],
@@ -137,6 +152,8 @@ export function OptimizationReport({ result }: OptimizationReportProps) {
       [/Configuration NON VIABLE/gi, 'Configuración NO VIABLE'],
       [/Configuration VIABLE/gi, 'Configuración VIABLE'],
       [/Votre configuration actuelle/gi, 'Su configuración actual'],
+      
+      
       
       // Stock
       [/Stock en baisse continue/gi, 'Stock en disminución continua'],
@@ -474,17 +491,7 @@ export function OptimizationReport({ result }: OptimizationReportProps) {
                         💡 {t('optAction')}: {translateMessage(rec.action)}
                       </p>
                     )}
-                    {rec.current_value !== undefined && rec.suggested_value !== undefined && (
-                      <div className="mt-2 flex items-center gap-4 text-sm">
-                        <span className="text-gray-600">
-                          {t('optCurrentValue')}: <strong>{rec.current_value.toFixed(2)}</strong> {rec.unit}
-                        </span>
-                        <span className="text-gray-400">→</span>
-                        <span className="text-blue-600">
-                          {t('optSuggestedValue')}: <strong>{rec.suggested_value.toFixed(2)}</strong> {rec.unit}
-                        </span>
-                      </div>
-                    )}
+                    
                   </div>
                 </div>
               </div>

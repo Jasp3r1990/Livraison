@@ -165,6 +165,9 @@ export const translations = {
     adequateCapacity: "Capacité de livraison adéquate",
     optimalConfigRecommended: "Configuration optimale recommandée",
     increaseOpportunity: "Opportunité d'augmenter les ventes",
+    configCurrentlyNonViable: "Configuration actuelle non viable",
+    reduceDailySales: "Réduire les ventes quotidiennes",
+    increaseDeliveryCapacity: "Augmenter la capacité de livraison",
     
     // Analysis Report
     analysisTitle: "Rapport d'Analyse",
@@ -365,6 +368,9 @@ export const translations = {
     adequateCapacity: "Capacidad de entrega adecuada",
     optimalConfigRecommended: "Configuración óptima recomendada",
     increaseOpportunity: "Oportunidad de aumentar las ventas",
+    configCurrentlyNonViable: "Configuración actual no viable",
+    reduceDailySales: "Reducir las ventas diarias",
+    increaseDeliveryCapacity: "Aumentar la capacidad de entrega",
     
     // Analysis Report
     analysisTitle: "Informe de Análisis",
