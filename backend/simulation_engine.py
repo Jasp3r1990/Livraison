@@ -37,7 +37,7 @@ class Order:
 @dataclass
 class SimulationConfig:
     daily_consumption: float = 4.25
-    initial_stock: float = 0.0
+    initial_stock: float = 45.0
     reorder_threshold: float = 36.0
     max_stock: float = 45.0  # Stock maximum à ne pas dépasser
     min_order_quantity: int = 2

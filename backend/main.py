@@ -83,7 +83,7 @@ class SimulationRequest(BaseModel):
         json_schema_extra = {
             "example": {
                 "daily_consumption": 4.25,
-                "initial_stock": 0.0,
+                "initial_stock": 45.0,
                 "reorder_threshold": 36.0,
                 "max_stock": 45.0,
                 "min_order_quantity": 2,

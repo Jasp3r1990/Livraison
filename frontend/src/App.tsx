@@ -21,7 +21,7 @@ const STORAGE_KEY = 'simulation_config';
 
 const defaultConfig: SimulationConfig = {
   daily_consumption: 100 / BALLS_PER_ASAFATE,
-  initial_stock: 0,
+  initial_stock: 45,
   reorder_threshold: 36,
   max_stock: 45,
   min_order_quantity: 2,
