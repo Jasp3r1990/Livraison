@@ -11,6 +11,7 @@ services:
       - PYTHONUNBUFFERED=1
     networks:
       - planning-network
+      - nginx_proxy
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
