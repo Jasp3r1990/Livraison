@@ -68,7 +68,7 @@ async def strip_api_prefix(request, call_next):
 
 class SimulationRequest(BaseModel):
     daily_consumption: float = Field(default=2.13, ge=0.1, le=100, description="Consommation quotidienne en unités")
-    initial_stock: float = Field(default=0.0, ge=0, le=1000, description="Stock initial en unités")
+    initial_stock: float = Field(default=45.0, ge=0, le=1000, description="Stock initial en unités")
     reorder_threshold: float = Field(default=36.0, ge=0, le=1000, description="Seuil de réapprovisionnement")
     max_stock: float = Field(default=45.0, ge=10, le=1000, description="Stock maximum à ne pas dépasser")
     min_order_quantity: int = Field(default=2, ge=2, le=100, description="Quantité minimum par commande")
